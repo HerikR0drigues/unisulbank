@@ -17,8 +17,9 @@ public class JDBCCadastro {
     private Connection con;
     private Statement stm;
     
-    public boolean CadastrarUsuario(String usuarioDigitado, String senhaDigitada) {
-         try {
+    public boolean CadastrarUsuario(String usuarioDigitado, String senhaDigitada, String nomeDigitado) {
+        int idUsuarioSenha = 0; 
+        try {
             con = conectar();
             stm = con.createStatement();
             
@@ -31,6 +32,15 @@ public class JDBCCadastro {
                 
                 query = "insert into usuario_senha (usuario, senha) values ('"+usuarioDigitado+"', '"+senhaCriptografada+"');";
                 stm.executeUpdate(query);
+                
+                query = "select max(id_usuario_senha) from usuario_senha";
+                rs = stm.executeQuery(query);
+                while (rs.next()) {
+                    idUsuarioSenha = rs.getInt(1);
+                }
+                
+                query = "insert into cliente (id_usuario_senha, nome, saldo) values ('"+idUsuarioSenha+"', '"+nomeDigitado+"', '"+0+"');";
+                stm.executeUpdate(query);                
                 
                 return true;
             } else {

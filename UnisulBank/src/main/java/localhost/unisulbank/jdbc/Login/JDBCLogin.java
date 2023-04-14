@@ -43,6 +43,7 @@ public class JDBCLogin {
     public Cliente carregarCliente(String usuario) {
         int idUsuario = 0;
         String nome =  null;
+        double saldo = 0;
         
         try {
             con = conectar();
@@ -60,10 +61,17 @@ public class JDBCLogin {
                 nome = rs.getString("nome");                 
             }
             
-            Cliente cliente = new Cliente(idUsuario, nome);
+            query = "select saldo from cliente where id_usuario_senha = '"+idUsuario+"';";
+            rs = stm.executeQuery(query);
+            while(rs.next()){
+                saldo = rs.getDouble("saldo");                 
+            }            
+            
+            Cliente cliente = new Cliente(idUsuario, nome, saldo);
             return cliente;
             
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
