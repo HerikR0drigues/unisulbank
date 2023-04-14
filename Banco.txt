@@ -1,0 +1,18 @@
+create table usuario_senha (
+	id_usuario_senha SERIAL PRIMARY KEY,
+	usuario VARCHAR(50),
+	senha VARCHAR(50)
+);
+
+create table cliente (
+	id_cliente SERIAL PRIMARY KEY,
+	id_usuario_senha INTEGER,
+	nome VARCHAR(50)
+);
+
+ALTER TABLE cliente
+    ADD FOREIGN KEY (id_usuario_senha) REFERENCES usuario_senha(id_usuario_senha);
+
+insert into cliente (id_usuario_senha, nome) values ('5', 'Miguel Augusto Fernandes');
+
+//INSERT USUARIO ANTES!
